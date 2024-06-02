@@ -12,6 +12,11 @@ import { SettingsComponent } from './settings/settings.component';
 
 import { HttpClientModule, withFetch,provideHttpClient } from '@angular/common/http';
 
+
+import { CanvasJS, CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +30,8 @@ import { HttpClientModule, withFetch,provideHttpClient } from '@angular/common/h
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+    CanvasJSAngularChartsModule
   ],
   providers: [
     provideClientHydration(),
@@ -33,4 +39,6 @@ import { HttpClientModule, withFetch,provideHttpClient } from '@angular/common/h
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+ }
+
