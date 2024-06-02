@@ -11,3 +11,10 @@
    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus cum quo modi quibusdam dolorem omnis quas praesentium perferendis illum hic architecto corrupti, officia sint eos nisi in fugiat iusto ratione.
   </div>
 </div>
+
+
+<div *ngIf="temperature && temperature.length > 0">
+  <div *ngFor="let item of temperature">
+    <p>Temperature: {{ item.temperature }}</p>
+  </div>
+</div>
