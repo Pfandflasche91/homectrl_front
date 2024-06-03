@@ -82,7 +82,7 @@ export class StatisticsComponent {
             content += e.entries[i].dataSeries.name + " " + "<strong>" + e.entries[i].dataPoint.y + "</strong>";
             content += "<br/>";
           }
-          return content;
+          return content+ CanvasJS.formatDate(e.entries[0].dataPoint.x, "HH:mm");
         }
       },
       data: [
