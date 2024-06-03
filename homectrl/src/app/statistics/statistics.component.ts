@@ -27,21 +27,26 @@ export class StatisticsComponent {
       axisY: [
         {
           minimum : "-10",
+          lineColor: "#FF0000",
+			    titleFontColor: "#00008B",
+			    labelFontColor: "#00008B",
           maximum : "40",
-          title: "Temperatur (°C)",
+          //title: "Temperatur (°C)",
           includeZero: false,
-
           /*crosshair: {
             enabled: true,
             snapToDataPoint: true
           }*/
         },
           {
-            title: " Humidity (%)",
+            //title: " Humidity (%)",
             showInLegend: true,
-            name: "Humidity",
+            //name: "Humidity",
             minimum : "0",
             maximum : "100",
+            lineColor: "#8D8D46",
+			      titleFontColor: "#FF7043",
+			      labelFontColor: "#FF7043",
             /*crosshair: {
               enabled: true
             }*/
@@ -89,16 +94,26 @@ export class StatisticsComponent {
         {
           type: "spline", // Change type to "bar", "area", "spline", "pie",etc.
           axisYIndex: 0,
-          markerType: "no marker",
+          markerType: "circle",
           name: "Temperature",
-          dataPoints: []
+          showInLegend: true,
+          markerSize: 5,
+          lineColor:"#00008B",
+          markerColor: "#00008B",
+          color:"#00008B",
+          dataPoints: [{x:(new Date(2024, 9, 1, 0, 0))}]
         },
         {
           type: "spline", // Change type to "bar", "area", "spline", "pie",etc.
           axisYIndex: 1,
-          markerType: "no marker",
+          markerType: "circle",
           name: "Humidity",
-          dataPoints: []
+          showInLegend: true,
+          markerSize: 5,
+          lineColor:"#FF7043",
+          markerColor: "#FF7043",
+          color:"#FF7043",
+          dataPoints: [{x:(new Date(2024, 0, 1, 0, 0))}]
         }
       ]
     });
