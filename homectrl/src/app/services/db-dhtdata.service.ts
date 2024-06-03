@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Temperature } from '../shared/temerature';
+import { Humidity } from '../shared/humidity';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,10 @@ export class DbDhtdataService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<Temperature[]> {
+  getAlltemp(): Observable<Temperature[]> {
     return this.http.get<Temperature[]>(`${this.apiUrl}/temperature`);
+  }
+  getAllhum(): Observable<Humidity[]> {
+    return this.http.get<Humidity[]>(`${this.apiUrl}/humidity`);
   }
 }
