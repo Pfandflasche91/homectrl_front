@@ -14,6 +14,8 @@ import { HttpClientModule, withFetch,provideHttpClient } from '@angular/common/h
 
 
 import { CanvasJS, CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import ApexCharts from 'apexcharts'
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 
 
@@ -31,7 +33,8 @@ import { CanvasJS, CanvasJSAngularChartsModule } from '@canvasjs/angular-charts'
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    NgApexchartsModule
   ],
   providers: [
     provideClientHydration(),
