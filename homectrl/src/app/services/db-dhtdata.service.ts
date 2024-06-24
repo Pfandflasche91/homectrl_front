@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Temperature } from '../shared/temerature';
+import { Temperature } from '../shared/temperature';
 import { Humidity } from '../shared/humidity';
 
 @Injectable({
