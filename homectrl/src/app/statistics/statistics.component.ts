@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild} from "@angular/core";
-import { Temperature } from '../shared/temperature';
-import { Humidity } from "../shared/humidity";
 import { DbDhtdataService } from '../services/db-dhtdata.service';
+import { FormControl, FormGroup } from '@angular/forms';
 
 import {
   ChartComponent,
@@ -10,6 +9,7 @@ import {
   ApexXAxis,
   ApexTitleSubtitle
 } from "ng-apexcharts";
+import { Hygrometer } from "../shared/hygrometer";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -28,14 +28,19 @@ export type ChartOptions = {
 })
 
 export class StatisticsComponent {
+  dateRange = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
+
   @ViewChild("chart", {static: false}) chart!: ChartComponent
   public chartOptions: Partial<ChartOptions>;
 
-  temperature: Temperature[] = [];
-  humidity: Humidity[] = [];
-  temp_length: number = 0;
 
-  constructor(private service: DbDhtdataService){
+  temp_length: number = 0;
+  hygrometerData: Hygrometer[] = [];
+
+  constructor(private dbDHTservice: DbDhtdataService){
 
     this.chartOptions = {
       series: [
@@ -141,9 +146,9 @@ export class StatisticsComponent {
         name: "pizza",
         data: data
       }])
-
+      console.log("bla")
+      console.log('Selected Date Range:', this.dateRange);
   }
-
 
   randData(): number[] {
     var arr = [];
@@ -151,6 +156,14 @@ export class StatisticsComponent {
       arr.push(Math.floor(Math.random() * 200) + 1);
     }
     return arr;
+  }
+
+  onDateRangeChange() {
+    console.log("[onDateRangeChange]: Start:  " + this.dateRange.value.start +"--- End:  "+this.dateRange.value.end);
+
+    this.dbDHTservice.getHygrometer(this.dateRange.value.start.toISOString(),this.dateRange.value.end.toISOString()).subscribe(data => {this.hygrometerData= data; })
+    console.log("restapi call :")
+
   }
 }
 

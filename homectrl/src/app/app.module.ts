@@ -16,7 +16,12 @@ import { HttpClientModule, withFetch,provideHttpClient } from '@angular/common/h
 import { CanvasJS, CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import ApexCharts from 'apexcharts'
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -34,11 +39,17 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     BrowserAnimationsModule,
     HttpClientModule,
     CanvasJSAngularChartsModule,
-    NgApexchartsModule
+    NgApexchartsModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     provideClientHydration(),
-    provideHttpClient(withFetch())
+    provideHttpClient(withFetch()),
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })

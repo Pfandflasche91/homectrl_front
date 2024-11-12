@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Temperature } from '../shared/temperature';
 import { Humidity } from '../shared/humidity';
+import { Hygrometer } from '../shared/hygrometer';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +15,15 @@ export class DbDhtdataService {
 
   constructor(private http: HttpClient) {}
 
-  getAlltemp(): Observable<Temperature[]> {
-    return this.http.get<Temperature[]>(`${this.apiUrl}/temperature`);
+  getHygrometer(targetStartDatetime: Date, targetEndDatetime: Date): Observable<Hygrometer[]> {
+    console.log("[getHygrometer]: Start:  " + targetStartDatetime +"--- End:  "+targetEndDatetime);
+    const start = encodeURIComponent(targetStartDatetime.toString());
+    const end = encodeURIComponent(targetEndDatetime.toString());
+
+    const url = `${this.apiUrl}/hygrometer/?targetStartDatetime=${start}&targetEndDatetime=${end}`;
+    console.log("[getHygrometer]: URL:  "+url);
+
+    return this.http.get<Hygrometer[]>(url);
   }
-  getAllhum(): Observable<Humidity[]> {
-    return this.http.get<Humidity[]>(`${this.apiUrl}/humidity`);
-  }
+
 }
