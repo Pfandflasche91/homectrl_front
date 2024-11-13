@@ -1,6 +1,7 @@
 export interface Hygrometer{
-    Temperature: number;
-    Humidity: number;
-    Sensornr: number;
+    id : number;
+    TEMPERATURE: number;
+    HUMIDITY: number;
+    SENSORNR: number;
     DATETIME: Date;
 }

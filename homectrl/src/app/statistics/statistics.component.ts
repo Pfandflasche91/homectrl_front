@@ -27,25 +27,42 @@ export type ChartOptions = {
   styleUrl: './statistics.component.css',
 })
 
-export class StatisticsComponent {
+export class StatisticsComponent implements OnInit {
   dateRange = new FormGroup({
     start: new FormControl(),
     end: new FormControl(),
   });
+  hygrometerData: Hygrometer[] = [];
 
   @ViewChild("chart", {static: false}) chart!: ChartComponent
   public chartOptions: Partial<ChartOptions>;
 
 
-  temp_length: number = 0;
-  hygrometerData: Hygrometer[] = [];
+
+  ngOnInit(): void {
+    const currentDate = new Date();
+    const startDate = new Date(currentDate);
+    startDate.setDate(currentDate.getDate() - 7);
+    const endDate = currentDate;
+    this.dateRange = new FormGroup({
+      start: new FormControl(startDate),
+      end: new FormControl(endDate)
+    });
+
+    this.onDateRangeChange();
+  }
 
   constructor(private dbDHTservice: DbDhtdataService){
 
     this.chartOptions = {
       series: [
         {
-          data: [1,2,3]
+          name:'Temperature',
+          data: this.hygrometerData.map(item => item.TEMPERATURE)
+        },
+        {
+          name: 'Humidity',
+          data: this.hygrometerData.map(item => item.HUMIDITY)
         }
 
       ],
@@ -57,77 +74,26 @@ export class StatisticsComponent {
 
       },
       xaxis: {
-        categories: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016]
+        type: 'datetime',
+        categories: this.hygrometerData.map(item => item.DATETIME),
       },
       yaxis: [
         {
-          axisTicks: {
-            show: true
-          },
-          axisBorder: {
-            show: true,
-            color: "#008FFB"
-          },
-          labels: {
-            style: {
+            title: {
+                text: 'Temperature'
+            },
+            min: 0,  // Startet bei 0
 
-            }
-          },
-          title: {
-            text: "Income (thousand crores)",
-            style: {
-              color: "#008FFB"
-            }
-          },
-          tooltip: {
-            enabled: true
-          }
         },
         {
-          seriesName: "Income",
-          opposite: true,
-          axisTicks: {
-            show: true
-          },
-          axisBorder: {
-            show: true,
-            color: "#00E396"
-          },
-          labels: {
-            style: {
+            opposite: false,  // Rechts anzeigen
+            title: {
+                text: 'Humidity'
+            },
+            min: 0,  // Startet bei 0
 
-            }
-          },
-          title: {
-            text: "Operating Cashflow (thousand crores)",
-            style: {
-              color: "#00E396"
-            }
-          }
-        },
-        {
-          seriesName: "Revenue",
-          opposite: true,
-          axisTicks: {
-            show: true
-          },
-          axisBorder: {
-            show: true,
-            color: "#FEB019"
-          },
-          labels: {
-            style: {
-
-            }
-          },
-          title: {
-            text: "Revenue (thousand crores)",
-            style: {
-              color: "#FEB019"
-            }
-          }
         }
-      ],
+    ]
 
 
 
@@ -135,36 +101,61 @@ export class StatisticsComponent {
 
 
   }
-
-  fetchDataAndRenderChart() {
-    this.refreshData()
-  }
-
   refreshData() {
-    var data = this.randData();
-    this.chart.updateSeries([{
-        name: "pizza",
-        data: data
-      }])
-      console.log("bla")
-      console.log('Selected Date Range:', this.dateRange);
+    console.log("refreshData");
+    this.chart.updateOptions({
+      xaxis: {
+        categories: this.hygrometerData.map(item => item.DATETIME),// ,
+      },
+      yaxis: [
+        {
+            title: {
+                text: 'Temperature'
+            },
+            min: 0,  // Startet bei 0
+
+        },
+        {
+            opposite: false,  // Rechts anzeigen
+            title: {
+                text: 'Humidity'
+            },
+            min: 0,  // Startet bei 0
+
+        }
+    ]
+    });
+    this.chart.updateSeries([
+      {
+        name:'Temperature',
+        data: this.hygrometerData.map(item => item.TEMPERATURE)
+      },
+      {
+        name: 'Humidity',
+        data: this.hygrometerData.map(item => item.HUMIDITY)
+      }
+    ])
   }
 
-  randData(): number[] {
-    var arr = [];
-    for (var i = 0; i < 9; i++) {
-      arr.push(Math.floor(Math.random() * 200) + 1);
+
+  async onDateRangeChange() {
+    if(this.dateRange.value.end){
+        //console.log("[onDateRangeChange]: Start:  " + this.dateRange.value.start +"--- End:  "+this.dateRange.value.end);
+
+        //workaround NYI real solution add +1 hour because of UTC format shit issue
+        this.dateRange.value.start.setUTCHours(this.dateRange.value.start.getUTCHours() + 1);
+        this.dateRange.value.end.setUTCHours(this.dateRange.value.end.getUTCHours() + 1);
+        try {
+          const hygrometerData = await this.dbDHTservice.getHygrometer(this.dateRange.value.start.toISOString(), this.dateRange.value.end.toISOString());
+          this.hygrometerData = hygrometerData;
+      } catch (error) {
+          console.error("Error loading hygrometer data:", error);
+      }
+      this.refreshData();
     }
-    return arr;
   }
 
-  onDateRangeChange() {
-    console.log("[onDateRangeChange]: Start:  " + this.dateRange.value.start +"--- End:  "+this.dateRange.value.end);
 
-    this.dbDHTservice.getHygrometer(this.dateRange.value.start.toISOString(),this.dateRange.value.end.toISOString()).subscribe(data => {this.hygrometerData= data; })
-    console.log("restapi call :")
-
-  }
 }
 
 

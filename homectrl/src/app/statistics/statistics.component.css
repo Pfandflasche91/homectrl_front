@@ -21,7 +21,8 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
-  width: auto;
+  width: 220px;   /* Feste Breite */
+  height: 40px;   /* Feste Höhe */
 }
 
 .button-40:hover {
@@ -36,11 +37,19 @@
 
 @media (min-width: 768px) {
   .button-40 {
-    padding: .75rem 1.5rem;
+    padding: .5rem 1.5rem;
   }
 }
 
 #chart {
   max-width: 650px;
   margin: 35px auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: row; /* Stapelt die Elemente vertikal */
+  gap: 70px; /* Fügt einen Abstand von 20px zwischen den Elementen hinzu */
+  align-items: center;
+  justify-content: center;
 }
